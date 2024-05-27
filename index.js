@@ -13,12 +13,11 @@ app.engine('hbs', hbs.engine)
 app.set('view engine','hbs')
 app.set('views','views')
 
-app.get('/', (req, res) => {	
-    res.render('index');    
-});
-app.get('/', (req, res) => {	
-    res.render('about');    
-});
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.render('index')
+})
 
 
 const PORT = process.env.PORT || 3000;
