@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "express": "^4.17.17",
-    "express-handlebars": "^6.0.1"
+    "express-handlebars": "^6.0.1",
+    "uuid": "^8.3.2"
   },
   "repository": {
     "type": "git",
