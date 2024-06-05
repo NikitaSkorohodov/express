@@ -1,4 +1,3 @@
-// models/card.js
 const path = require('path');
 const fs = require('fs');
 
@@ -36,33 +35,40 @@ class Card {
     });
   }
 
-  static async remove(id){
-    const card = await Card.fetch()
+  static async remove(id) {
+    const card = await Card.fetch();
 
     const idx = card.courses.findIndex(c => c.id === id);
+    if (idx === -1) {
+      return card; // Ничего не найдено для удаления
+    }
+
     const course = card.courses[idx];
 
     if (course.count === 1) {
-        card.courses = card.courses.filter(c => c.id === course.id)
+      card.courses = card.courses.filter(c => c.id !== course.id);
     } else {
-        card.courses[idx].count--
-  }
-  card.price -= course.price
-  return new Promise((resolve, reject) =>{
-    fs.writeFile(p, JSON.stringify(card), err =>{
-        if (err){
-            reject(err)
-        }else{
-            resolve(card)
+      card.courses[idx].count--;
+    }
+
+    card.price -= course.price;
+
+    return new Promise((resolve, reject) => {
+      fs.writeFile(p, JSON.stringify(card), err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(card);
         }
-    })
-  })}
+      });
+    });
+  }
 
   static async fetch() {
     return new Promise((resolve, reject) => {
       fs.readFile(p, 'utf-8', (err, content) => {
         if (err) {
-          reject(err);
+          resolve({ courses: [], price: 0 });
         } else {
           resolve(JSON.parse(content));
         }
@@ -72,3 +78,4 @@ class Card {
 }
 
 module.exports = Card;
+

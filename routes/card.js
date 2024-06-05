@@ -5,7 +5,7 @@ const router = Router();
 
 router.post('/add', async (req, res) => {
   try {
-    const course = await Course.getById(req.body.id);
+    const course = await Course.findById(req.body.id);  // Исправлено на findById
     await Card.add(course);
     res.redirect('/card');
   } catch (error) {
@@ -40,4 +40,3 @@ router.get('/', async (req, res) => {
 });
 
 module.exports = router;
-
